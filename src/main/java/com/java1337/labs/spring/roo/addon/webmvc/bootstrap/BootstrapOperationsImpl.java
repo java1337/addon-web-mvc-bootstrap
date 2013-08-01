@@ -18,6 +18,7 @@ import org.springframework.roo.project.Path;
 import org.springframework.roo.project.PathResolver;
 import org.springframework.roo.project.ProjectOperations;
 import org.springframework.roo.project.Repository;
+import org.springframework.roo.support.util.FileUtils;
 import org.springframework.roo.support.util.XmlUtils;
 import org.w3c.dom.Element;
 
@@ -30,7 +31,6 @@ import org.w3c.dom.Element;
 @Service
 public class BootstrapOperationsImpl extends AbstractOperations implements BootstrapOperations {
 
-
     private static final char SEPARATOR = File.separatorChar;
 
     /**
@@ -42,7 +42,7 @@ public class BootstrapOperationsImpl extends AbstractOperations implements Boots
      * Use TypeLocationService to find types which are annotated with a given annotation in the project
      */
     @Reference private TypeLocationService typeLocationService;
-    
+
     /**
      * Use TypeManagementService to change types
      */
@@ -51,14 +51,14 @@ public class BootstrapOperationsImpl extends AbstractOperations implements Boots
     /** {@inheritDoc} */
     public boolean isInstallBootstrapAvailable() {
         PathResolver pathResolver = projectOperations.getPathResolver();
-        return fileManager.exists(pathResolver.getFocusedIdentifier(Path.SRC_MAIN_WEBAPP, "WEB-INF/views"))
-            && !projectOperations.isFeatureInstalledInFocusedModule(FeatureNames.JSF) 
-            && fileManager.exists(pathResolver.getFocusedIdentifier(Path.SRC_MAIN_WEBAPP, "WEB-INF" + SEPARATOR + "spring" + SEPARATOR + "webmvc-config.xml"))
-            && fileManager.exists(pathResolver.getFocusedIdentifier(Path.SRC_MAIN_WEBAPP, "WEB-INF" + SEPARATOR + "tags"));
+        return
+                projectOperations.isFeatureInstalledInFocusedModule(FeatureNames.MVC) 
+            && !projectOperations.isFeatureInstalledInFocusedModule(FeatureNames.JSF)
+            &&  fileManager.exists(pathResolver.getFocusedIdentifier(Path.SRC_MAIN_WEBAPP, "WEB-INF" + SEPARATOR + "tags"))
+            &&  fileManager.exists(pathResolver.getFocusedIdentifier(Path.SRC_MAIN_WEBAPP, "WEB-INF" + SEPARATOR + "views"));
 
     }
 
-    
     /** {@inheritDoc} */
     public void setup() {
         // Install the add-on Google code repository needed to get the annotation 
@@ -70,11 +70,26 @@ public class BootstrapOperationsImpl extends AbstractOperations implements Boots
         dependencies.add(new Dependency("com.java1337.labs.spring.roo.addon.webmvc.bootstrap", "com.java1337.labs.spring.roo.addon.webmvc.bootstrap", "0.1.0.BUILD-SNAPSHOT", DependencyType.JAR, DependencyScope.PROVIDED));
         
         // Install dependencies defined in external XML file
-        for (Element dependencyElement : XmlUtils.findElements("/configuration/dependencies/dependency", XmlUtils.getConfiguration(getClass()))) {
+        for (Element dependencyElement : XmlUtils.findElements("/configuration/bootstrap/dependencies/dependency", XmlUtils.getConfiguration(getClass()))) {
             dependencies.add(new Dependency(dependencyElement));
         }
 
         // Add all new dependencies to pom.xml
         projectOperations.addDependencies("", dependencies);
+    }
+
+    /**
+     * Copies the specified source directory to the destination.
+     * <p>
+     * Both the source must exist. If the destination does not already exist, it
+     * will be created. If the destination does exist, it must be a directory
+     * (not a file).
+     * 
+     * @param source the already-existing source directory (required)
+     * @param destination the destination directory (required)
+     * @return true if the copy was successful
+     */
+    protected boolean copyDirectoryContents(File source, File target) {
+        return FileUtils.copyRecursively(source, target, false);
     }
 }

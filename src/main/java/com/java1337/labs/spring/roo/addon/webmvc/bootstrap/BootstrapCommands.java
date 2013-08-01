@@ -1,5 +1,7 @@
 package com.java1337.labs.spring.roo.addon.webmvc.bootstrap;
 
+import java.util.logging.Logger;
+
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -19,12 +21,19 @@ import org.springframework.roo.shell.CommandMarker;
 @Component // Use these Apache Felix annotations to register your commands class in the Roo container
 @Service
 public class BootstrapCommands implements CommandMarker { // All command types must implement the CommandMarker interface
-    
+
+
+    private static Logger logger = Logger.getLogger(BootstrapCommands.class.getName());
+
     /**
      * Get a reference to the BootstrapOperations from the underlying OSGi container
      */
     @Reference private BootstrapOperations operations;
-    
+
+    public BootstrapCommands() {
+    	logger.warning("Loaded " + BootstrapCommands.class.getName() + "; try 'web mvc install bootstrap'");
+    }
+
     /**
      * This method is optional. It allows automatic command hiding in situations when the command should not be visible.
      * For example the 'entity' command will not be made available before the user has defined his persistence settings 
@@ -44,7 +53,7 @@ public class BootstrapCommands implements CommandMarker { // All command types m
      * This method registers a command with the Roo shell. It has no command attribute.
      * 
      */
-    @CliCommand(value = "bootstrap setup", help = "Setup Spring Roo Bootstrap addon")
+    @CliCommand(value = "web mvc install bootstrap", help = "Setup Spring Roo Bootstrap addon")
     public void setup() {
         operations.setup();
     }
