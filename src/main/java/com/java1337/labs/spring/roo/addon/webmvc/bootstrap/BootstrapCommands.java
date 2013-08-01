@@ -3,10 +3,8 @@ package com.java1337.labs.spring.roo.addon.webmvc.bootstrap;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
-import org.springframework.roo.model.JavaType;
 import org.springframework.roo.shell.CliAvailabilityIndicator;
 import org.springframework.roo.shell.CliCommand;
-import org.springframework.roo.shell.CliOption;
 import org.springframework.roo.shell.CommandMarker;
 
 /**
@@ -37,35 +35,16 @@ public class BootstrapCommands implements CommandMarker { // All command types m
      * 
      * @return true (default) if the command should be visible at this stage, false otherwise
      */
-    @CliAvailabilityIndicator({ "bootstrap setup", "bootstrap add", "bootstrap all" })
-    public boolean isCommandAvailable() {
-        return operations.isCommandAvailable();
+    @CliAvailabilityIndicator({ "web mvc install bootstrap" })
+    public boolean isInstallBootstrapAvailable() {
+        return operations.isInstallBootstrapAvailable();
     }
-    
-    /**
-     * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
-     * 
-     * @param type 
-     */
-    @CliCommand(value = "bootstrap add", help = "Some helpful description")
-    public void add(@CliOption(key = "type", mandatory = true, help = "The java type to apply this annotation to") JavaType target) {
-        operations.annotateType(target);
-    }
-    
+
     /**
      * This method registers a command with the Roo shell. It has no command attribute.
      * 
      */
-    @CliCommand(value = "bootstrap all", help = "Some helpful description")
-    public void all() {
-        operations.annotateAll();
-    }
-    
-    /**
-     * This method registers a command with the Roo shell. It has no command attribute.
-     * 
-     */
-    @CliCommand(value = "bootstrap setup", help = "Setup Bootstrap addon")
+    @CliCommand(value = "bootstrap setup", help = "Setup Spring Roo Bootstrap addon")
     public void setup() {
         operations.setup();
     }

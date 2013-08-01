@@ -29,9 +29,8 @@ public final class BootstrapMetadataProvider extends AbstractItdMetadataProvider
      */
     protected void activate(ComponentContext context) {
         metadataDependencyRegistry.registerDependency(PhysicalTypeIdentifier.getMetadataIdentiferType(), getProvidesType());
-        addMetadataTrigger(new JavaType(RooBootstrap.class.getName()));
     }
-    
+
     /**
      * The deactivate method for this OSGi component, this will be called by the OSGi container upon bundle deactivation 
      * (result of the 'addon uninstall' command) 
@@ -40,9 +39,8 @@ public final class BootstrapMetadataProvider extends AbstractItdMetadataProvider
      */
     protected void deactivate(ComponentContext context) {
         metadataDependencyRegistry.deregisterDependency(PhysicalTypeIdentifier.getMetadataIdentiferType(), getProvidesType());
-        removeMetadataTrigger(new JavaType(RooBootstrap.class.getName()));    
     }
-    
+
     /**
      * Return an instance of the Metadata offered by this add-on
      */
@@ -55,7 +53,7 @@ public final class BootstrapMetadataProvider extends AbstractItdMetadataProvider
      * Define the unique ITD file name extension, here the resulting file name will be **_ROO_Bootstrap.aj
      */
     public String getItdUniquenessFilenameSuffix() {
-        return "Bootstrap";
+        return "WebMvc_Bootstrap";
     }
 
     protected String getGovernorPhysicalTypeIdentifier(String metadataIdentificationString) {
