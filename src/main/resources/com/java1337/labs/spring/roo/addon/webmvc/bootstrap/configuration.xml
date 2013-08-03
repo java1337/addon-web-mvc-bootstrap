@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
 	<bootstrap>
+		<properties> 
+			<bootstrap.version>3.0.0-rc1</<bootstrap.version>> 
+		</properties> 
 		<dependencies>
 			<!-- Maven-style dependency definition (should be used if exclusions need to be defined) -->
 			<dependency>
 				<groupId>org.webjars</groupId>
 				<artifactId>bootstrap</artifactId>
-			 	<version>3.0.0-rc1</version>
+			 	<version>${bootstrap.version}</version>
 			</dependency>
 		</dependencies>
 	</bootstrap>

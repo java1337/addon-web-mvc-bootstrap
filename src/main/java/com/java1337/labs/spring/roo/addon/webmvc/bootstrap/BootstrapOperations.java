@@ -8,6 +8,9 @@ package com.java1337.labs.spring.roo.addon.webmvc.bootstrap;
  */
 public interface BootstrapOperations {
 
+
+    public static final String MODULE_MVC_BOOTSTRAP = "addon-web-mvc-bootstrap";
+
     /**
      * Indicate commands should be available
      * 
